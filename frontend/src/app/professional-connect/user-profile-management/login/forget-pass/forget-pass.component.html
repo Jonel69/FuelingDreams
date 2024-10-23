@@ -1,0 +1,66 @@
+<section class="main">
+    <div class="forgot-password-container">
+        <div class="content-wrapper">
+            <div class="main-column">
+                <div class="form-container">
+                    <img loading="lazy" src="/assets/logo.png" class="profile-image" alt="User profile" />
+
+                    <!-- forget pass form -->
+                    <form *ngIf="activeForm === 'forgetpass'" class="form-content">
+                        <h1 class="form-title">Enter Email Address</h1>
+                        <input type="email" id="emailInput" class="email-input" aria-label="Enter Email Address" />
+                        <div class="back-link">Back To <span (click)="onSignin()" class="fpsignin">Sign In.</span></div>
+                        <button class="send-code-btn" (click)="toggleForm('emailotp')">Send Code</button>
+                        <hr>
+                        <p class="signup-text">Don't have an account?</p>
+                        <button type="button" class="signup-btn">
+                            <span class="signup-btn-text" (click)="onregister()">Sign Up</span>
+                        </button>
+                    </form>
+
+                    <!-- email otp form -->
+
+                    <form *ngIf="activeForm === 'emailotp'" class="form-content">
+                        <h1 class="form-title">Enter Verification Code</h1>
+
+                        <!-- <div class="input-field">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 'input2')" onkeydown="moveToPrevious(event, 'input1')" id="input1">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 'input3')" onkeydown="moveToPrevious(event, 'input1')" id="input2">
+                            <input type="text" maxlength="1" oninput="moveToNext(this, 'input4')" onkeydown="moveToPrevious(event, 'input2')" id="input3">
+                            <input type="text" maxlength="1" onkeydown="moveToPrevious(event, 'input3')" id="input4">
+                        </div> -->
+                        <div class="input-field">
+                            <input type="text" id="input1" maxlength="1" [(ngModel)]="otp[0]" (input)="moveToNext(0)"
+                                (keydown)="moveToPrevious($event, 0)">
+
+                            <input type="text" id="input2" maxlength="1" [(ngModel)]="otp[1]" (input)="moveToNext(1)"
+                                (keydown)="moveToPrevious($event, 1)">
+
+                            <input type="text" id="input3" maxlength="1" [(ngModel)]="otp[2]" (input)="moveToNext(2)"
+                                (keydown)="moveToPrevious($event, 2)">
+
+                            <input type="text" id="input4" maxlength="1" [(ngModel)]="otp[3]"
+                                (keydown)="moveToPrevious($event, 3)">
+                        </div>
+                        <a href="#" class="back-link">If you didn’t receive a code!! <span
+                                class="resend">Resend</span></a>
+                        <button type="submit" class="send-code-btn1" (click)="toggleForm('resetpass')">Verify</button>
+                    </form>
+
+                    <!-- reset pass form -->
+
+                    <form *ngIf="activeForm === 'resetpass'" class="form-content">
+                        <h1 class="form-title">Enter New Password</h1>
+                        <label for="emailInput" class="visually-hidden"></label>
+                        <input type="password" id="emailInput" class="password-input1" aria-label="Enter Email Address" />
+                        <h1 class="form-title">Confirm Password</h1>
+                        <label for="emailInput" class="visually-hidden"></label>
+                        <input type="password" id="emailInput" class="password-input1" aria-label="Enter Email Address" />
+                        <button type="submit" class="send-code-btn2">Reset</button>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

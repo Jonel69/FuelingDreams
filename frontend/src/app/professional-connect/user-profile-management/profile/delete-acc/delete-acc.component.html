@@ -1,0 +1,44 @@
+<!-- First Form: delacc -->
+<form *ngIf="activeForm === 'delacc'">
+    <div class="main-div">
+        <h1>
+            This Action Will Delete Your Account
+        </h1>
+        <h3>This Action Cannot be Undone. Are you sure <br > you want to continue?</h3>
+    </div>
+
+    <div class="buttons">
+        <!-- Cancel Button -->
+        <button mat-raised-button class="cancelbutt" (click)="onCancel()">Cancel</button>
+
+        <!-- Confirm Button to toggle the next form -->
+        <button mat-raised-button class="confbutt" (click)="toggleForm('delacc1')">Confirm</button>
+    </div>
+</form>
+
+<!-- Second Form: delacc1 -->
+<form *ngIf="activeForm === 'delacc1'">
+    <div class="main-div">
+        <h1>Delete Account</h1>
+        <h3>To continue, please enter your password for confirmation</h3>
+
+        <!-- Input for password (you should change type to "password") -->
+        <input type="password" placeholder="Password" name="password" required class="inpass">
+    </div>
+
+    <div class="buttons">
+        <!-- Submit or Cancel buttons for this form (You can add more functionality as needed) -->
+        <button mat-raised-button class="cancelbutt" (click)="onCancel()">Cancel</button>
+        <button mat-raised-button class="confbutt" (click)="toggleForm('delacc2')">Submit</button>
+    </div>
+</form>
+
+<!-- Third Form: delacc2 -->
+
+<form *ngIf="activeForm === 'delacc2'">
+    <div class="main-div">
+        <h1>Delete Account</h1>
+        <h3>Your Account has been Deleted </h3>
+        <h4>you will be redirected to the homepage</h4>
+    </div>
+</form>

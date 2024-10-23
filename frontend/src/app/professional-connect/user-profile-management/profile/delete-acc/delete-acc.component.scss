@@ -1,0 +1,122 @@
+.main-div {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+
+}
+
+h1 {
+
+    align-items: center;
+    
+    margin-top: 10%;
+    text-align: center;
+    font-weight: 550;
+    
+}
+
+h3 {
+    margin-top: 10px;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 10px;
+    
+}
+
+// .butt {
+//     padding: 10px 20px;
+//     font-size: 16px;
+//     border-radius: 8px;
+//     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+//     /* Button shadow */
+//     text-transform: uppercase;
+//     /* Make text uppercase */
+//     margin: 5px;
+//     /* Space between buttons */
+// }
+
+/* Specific styles for the cancel button */
+// .cancel-btn {
+//     background-color: #f44336;
+//     /* Red color */
+//     color: white;
+//     /* White text */
+//     border: none;
+//     /* Remove border */
+// }
+
+// .cancel-btn:hover {
+//     background-color: #d32f2f;
+//     /* Darker red on hover */
+// }
+
+// /* Specific styles for the confirm button */
+// .confirm-btn {
+//     background-color: #4caf50;
+//     /* Green color */
+//     color: white;
+//     /* White text */
+//     border: none;
+//     /* Remove border */
+// }
+
+// .confirm-btn:hover {
+//     background-color: #388e3c;
+//     /* Darker green on hover */
+// }
+
+
+.cancelbutt{
+    background-color: aqua;
+    color: aqua;
+    width: 40px;
+}
+.cancelbutt:hover{
+    width: 40px;
+    background-color: rgb(245, 85, 112);
+    
+}
+
+
+
+.confbutt{
+    background-color: aqua;
+    color: aqua;
+}
+
+.confbutt:hover{
+    background-color: rgb(69, 193, 69);
+    
+}
+
+.mat-raised-button{
+    background-color: aqua;
+}
+
+h3{
+    font-family: poppins, sans-serif;
+}
+
+.inpass{
+   background-color: rgba(190, 205, 214, 0.45);
+    width: 80%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    
+
+}
+.customDC{
+    background-color: aqua;
+}

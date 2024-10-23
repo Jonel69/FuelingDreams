@@ -1,0 +1,44 @@
+<section class="login-main">
+    <div class="welcome-div">
+        <div class="main-cont-div">
+            <h1>Welcome !!</h1>
+            <h2>Onward with Your Professional </h2>
+            <h3>Journey</h3>
+        </div>
+    </div>
+    <div class="cont-div">
+        <div class="form-cont">
+            <div class="mainlog">
+                <form (ngSubmit)="register()">
+                    <h1 class="setup-title">Setup your Account</h1>
+                    <div class="name-container">
+                        <label for="firstName" class="visually-hidden">First Name</label>
+                        <input type="text" formControlName="firstName" placeholder="First Name" class="input-field" />
+                        <input type="text" formControlName="lastName" placeholder="Last Name" class="input-field" />
+                    </div>
+                    <div class="info-container">
+                        <input type="date" formControlName="dob" placeholder="Date of Birth" class="input-field" />
+                        <select formControlName="gender" class="input-field">
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div></div>
+                    <input type="text" formControlName="address" placeholder="Address" class="input-field" />
+                    <input type="email" formControlName="email" placeholder="Email" class="input-field">
+                    <input type="tel" formControlName="mobile" placeholder="Mobile Number" class="input-field" />
+                    <input type="text" formControlName="country" placeholder="Country" class="input-field" />
+                    <input type="password" formControlName="password" placeholder="Password" class="input-field" />
+                    <input type="password" formControlName="confirmPassword" placeholder="Confirm Password"
+                        class="input-field" />
+                    <div class="regdiv">
+                        <button type="submit" class="regbt">Register.</button>
+                    </div>
+                    <p>Already have an account?<span class="highlighted" (click)="onlogin()">Login.</span></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
