@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const pool = require('../config/db');
+const { pool, mongoose } = require('../config/db');
 const transporter = require('../config/mailer');
 const crypto = require('crypto');
 const moment = require('moment');
@@ -25,15 +25,15 @@ async function verifyRecaptcha(token) {
 }
 
 // Fetch countries from the database
-const getCountries = (req, res) => {
-    pool.query('SELECT country_code AS code, name FROM countries', (err, results) => {
-        if (err) {
-            console.error('Error fetching countries:', err);
-            return res.status(500).json({ error: 'Error fetching countries' });
-        }
-        console.log('Fetched countries:', results); // Log results for debugging
-        res.json(results);
-    });
+const getCountries = async (req, res) => {
+    try {
+      const [results] = await pool.query('SELECT name FROM countries');
+      console.log('Fetched countries:', results); // Log results for debugging
+      res.json(results);
+    } catch (err) {
+      console.error('Error fetching countries:', err);
+      res.status(500).json({ error: 'Error fetching countries' });
+    }
 };
 
 const register = async (req, res) => {

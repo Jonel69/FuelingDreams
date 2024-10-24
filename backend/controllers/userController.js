@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+const { pool, mongoose } = require('../config/db');
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const fs = require('fs');
