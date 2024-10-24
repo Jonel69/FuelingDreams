@@ -1,37 +1,60 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../auth.service';
 import { HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
+
+// Define interfaces for form data types
+interface LoginCredentials {
+  email: string;
+  pass: string;
+}
+
+interface RegistrationData {
+  f_name: string;
+  l_name: string;
+  email: string;
+  phone_no: string;
+  dob: string;
+  gender: string;
+  country: string;
+  address: string;
+  pass: string;
+}
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, HttpClientModule],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'], // Fixed styleUrls
+  styleUrls: ['./register.component.scss'],
   providers: [AuthService]
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
+  countries: any[] = [];
   errorMessage: string = '';
+
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    pass: ['', Validators.required] // Changed from password to pass to match service
   });
 
   registerForm = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: ['', Validators.required],
+    f_name: ['', [Validators.required, Validators.minLength(2)]],
+    l_name: ['', [Validators.required, Validators.minLength(2)]],
     dob: ['', Validators.required],
     gender: ['', Validators.required],
-    address: ['', Validators.required],
+    address: ['', [Validators.required, Validators.minLength(5)]],
     email: ['', [Validators.required, Validators.email]],
-    mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+    phone_no: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
     country: ['', Validators.required],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    pass: ['', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    ]],
     confirmPassword: ['', Validators.required]
   });
 
@@ -41,8 +64,24 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private router: Router,
     private snackBar: MatSnackBar,
-    private authService: AuthService,
-  ) { }
+    private authService: AuthService
+  ) {}
+
+  ngOnInit() {
+    this.loadCountries();
+  }
+
+  loadCountries() {
+    this.authService.getCountries().subscribe({
+      next: (data) => {
+        this.countries = data;
+      },
+      error: (error) => {
+        console.error('Error loading countries:', error);
+        this.snackBar.open('Error loading countries', 'Close', { duration: 3000 });
+      }
+    });
+  }
 
   toggleForm(form: 'login' | 'register') {
     this.activeForm = form;
@@ -50,61 +89,60 @@ export class RegisterComponent {
 
   login() {
     if (this.loginForm.valid) {
-      console.log("Login info==>", this.loginForm.value);
-
-      // Use type assertion to ensure proper type
-      const credentials = this.loginForm.value as { email: string; password: string };
+      const credentials: LoginCredentials = {
+        email: this.loginForm.get('email')?.value ?? '',
+        pass: this.loginForm.get('pass')?.value ?? ''
+      };
 
       this.authService.login(credentials).subscribe({
-        next: (response: any) => {
-          console.log("Login successful", response);
-          this.router.navigate(['/professional-connect/profile']);
+        next: (response) => {
+          localStorage.setItem('token', response.token);
+          this.router.navigate(['/dashboard']);
+          this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
         },
-        error: (error: any) => {
-          console.error("Login failed", error);
-          this.snackBar.open("Invalid email or Password!", 'close', { duration: 3000 });
+        error: (error) => {
+          console.error('Login error:', error);
+          this.snackBar.open(error.error.error || 'Login failed', 'Close', { duration: 3000 });
         }
       });
-    } else {
-      this.snackBar.open("Invalid email or Password!", 'close', { duration: 3000 });
     }
   }
-
 
   register() {
     if (this.registerForm.valid) {
-      if (this.registerForm.value.password === this.registerForm.value.confirmPassword) {
-        console.log("Register Form Data", this.registerForm.value);
-
-        this.authService.register(this.registerForm.value).subscribe({
-          next: (response: any) => {
-            console.log("Registration successful", response);
-            this.router.navigate(['/login']);
-            this.snackBar.open('Registration successful!', 'Close', { duration: 3000 });
-          },
-          error: (error: any) => {
-            console.error("Registration failed", error);
-            this.snackBar.open('Registration failed!', 'Close', { duration: 3000 });
-          }
-        });
-      } else {
+      if (this.registerForm.get('pass')?.value !== this.registerForm.get('confirmPassword')?.value) {
         this.snackBar.open('Passwords do not match!', 'Close', { duration: 3000 });
+        return;
       }
+
+      const registrationData: RegistrationData = {
+        f_name: this.registerForm.get('f_name')?.value ?? '',
+        l_name: this.registerForm.get('l_name')?.value ?? '',
+        email: this.registerForm.get('email')?.value ?? '',
+        phone_no: this.registerForm.get('phone_no')?.value ?? '',
+        dob: this.registerForm.get('dob')?.value ?? '',
+        gender: this.registerForm.get('gender')?.value ?? '',
+        country: this.registerForm.get('country')?.value ?? '',
+        address: this.registerForm.get('address')?.value ?? '',
+        pass: this.registerForm.get('pass')?.value ?? ''
+      };
+
+      this.authService.register(registrationData).subscribe({
+        next: (response) => {
+          this.snackBar.open('Registration successful!', 'Close', { duration: 3000 });
+          this.activeForm = 'login';
+        },
+        error: (error) => {
+          console.error('Registration error:', error);
+          this.snackBar.open(error.error.error || 'Registration failed', 'Close', { duration: 3000 });
+        }
+      });
     } else {
-      this.snackBar.open('Please fill in all fields correctly!', 'Close', { duration: 3000 });
+      this.snackBar.open('Please fill all required fields correctly', 'Close', { duration: 3000 });
     }
   }
 
-  onforget(){
-    this.router.navigate(['/professional-connect/forget-pass']);
-  }
-
-  onlogin(){
-    this.router.navigate(['/professional-connect/login']);
+  onforget() {
+    this.router.navigate(['/forget-password']);
   }
 }
-
-
-
-
-
