@@ -40,7 +40,7 @@ export class ProfileComponent implements OnInit {
 
   fetchProfileData(): void {
     // Replace 'your-api-endpoint' with the actual API endpoint to fetch profile data
-    const apiEndpoint = 'http://localhost:3000/api/profile'; // Example endpoint
+    const apiEndpoint = 'http://localhost:5000/api/getprofile'; 
 
     this.http.get(apiEndpoint).subscribe(
       (data: any) => {
