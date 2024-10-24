@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { FormGroup, FormControl } from '@angular/forms';
 
 // Define interfaces for form data types
 interface LoginCredentials {
@@ -33,12 +34,15 @@ interface RegistrationData {
   providers: [AuthService]
 })
 export class RegisterComponent implements OnInit {
+  myGroup: FormGroup;
+  
   countries: any[] = [];
   errorMessage: string = '';
 
+  // Updated form group with 'pass' field instead of 'password'
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    pass: ['', Validators.required] // Changed from password to pass to match service
+    pass: ['', Validators.required] // Changed from password to pass to match database field
   });
 
   registerForm = this.fb.group({
@@ -65,12 +69,17 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private snackBar: MatSnackBar,
     private authService: AuthService
-  ) {}
+  ) {
+    this.myGroup = new FormGroup({
+      firstName: new FormControl('')
+    });
+  }
 
   ngOnInit() {
     this.loadCountries();
   }
 
+  // Fetch countries for dropdown
   loadCountries() {
     this.authService.getCountries().subscribe({
       next: (data) => {
@@ -83,10 +92,12 @@ export class RegisterComponent implements OnInit {
     });
   }
 
+  // Toggle between login and register forms
   toggleForm(form: 'login' | 'register') {
     this.activeForm = form;
   }
 
+  // Handle login submission
   login() {
     if (this.loginForm.valid) {
       const credentials: LoginCredentials = {
@@ -108,6 +119,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // Handle registration submission
   register() {
     if (this.registerForm.valid) {
       if (this.registerForm.get('pass')?.value !== this.registerForm.get('confirmPassword')?.value) {
@@ -142,6 +154,7 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // Redirect to forget password page
   onforget() {
     this.router.navigate(['/forget-password']);
   }
