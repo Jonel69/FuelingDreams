@@ -11,7 +11,7 @@
         <div class="mainlog">
   
           <!-- Login Form -->
-          <form *ngIf="activeForm === 'login'" [formGroup]="loginForm" (ngSubmit)="login()" class="testL">
+          <!-- <form *ngIf="activeForm === 'login'" [formGroup]="loginForm" (ngSubmit)="login()" class="testL">
             <h4>Login to your Account</h4>
             <div class="form-group">
               <input type="email" formControlName="email" placeholder="Email" class="input-field" />
@@ -28,10 +28,10 @@
             <br>
             <p (click)="toggleForm('register')">Don't have an account?
               <span class="highlighted">Register.</span></p>
-          </form>
+          </form> -->
   
           <!-- Register Form -->
-          <form *ngIf="activeForm === 'register'" [formGroup]="registerForm" (ngSubmit)="register()">
+          <form [formGroup]="registerForm" (ngSubmit)="register()">
             <h1 class="setup-title">Setup your Account</h1>
             <div class="name-container">
               <input type="text" formControlName="f_name" placeholder="First Name" class="input-field" />
@@ -63,7 +63,7 @@
               <button type="submit" class="regbt">Register</button>
             </div>
   
-            <p (click)="toggleForm('login')">Already have an account?
+            <p (click)="onlogin()">Already have an account?
               <span class="highlighted">Login</span></p>
           </form>
        

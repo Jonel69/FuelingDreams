@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
     l_name: ['', [Validators.required, Validators.minLength(2)]],
     dob: ['', Validators.required],
     gender: ['', Validators.required],
-    address: ['', [Validators.required, Validators.minLength(5)]],
+    address: ['', [Validators.required, Validators.minLength(0)]],
     email: ['', [Validators.required, Validators.email]],
     phone_no: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
     country: ['', Validators.required],
@@ -62,7 +62,7 @@ export class RegisterComponent implements OnInit {
     confirmPassword: ['', Validators.required]
   });
 
-  activeForm: 'login' | 'register' = 'login';
+  // activeForm: 'login' | 'register' = 'login';
 
   constructor(
     private fb: FormBuilder,
@@ -93,35 +93,40 @@ export class RegisterComponent implements OnInit {
   }
 
   // Toggle between login and register forms
-  toggleForm(form: 'login' | 'register') {
-    this.activeForm = form;
-  }
+  // toggleForm(form: 'login' | 'register') {
+  //   this.activeForm = form;
+  // }
 
   // Handle login submission
-  login() {
-    if (this.loginForm.valid) {
-      const credentials: LoginCredentials = {
-        email: this.loginForm.get('email')?.value ?? '',
-        pass: this.loginForm.get('pass')?.value ?? ''
-      };
+  // login() {
+  //   console.log("This is the form",this.loginForm.value);
+  //   if (this.loginForm.valid) {
+  //     const credentials: LoginCredentials = {
+  //       email: this.loginForm.get('email')?.value ?? '',
+  //       pass: this.loginForm.get('pass')?.value ?? ''
+  //     };
 
-      this.authService.login(credentials).subscribe({
-        next: (response) => {
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/dashboard']);
-          this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-        },
-        error: (error) => {
-          console.error('Login error:', error);
-          this.snackBar.open(error.error.error || 'Login failed', 'Close', { duration: 3000 });
-        }
-      });
-    }
-  }
+  //     this.authService.login(credentials).subscribe({
+  //       next: (response) => {
+  //         localStorage.setItem('token', response.token);
+  //         this.router.navigate(['/dashboard']);
+  //         this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
+  //       },
+  //       error: (error) => {
+  //         console.error('Login error:', error);
+  //         this.snackBar.open(error.error.error || 'Login failed', 'Close', { duration: 3000 });
+  //       }
+  //     });
+  //   }else{
+  //     console.log("This form is not valid");
+  //   }
+  // }
 
   // Handle registration submission
   register() {
+    console.log("THis is the form:",this.registerForm.value);
     if (this.registerForm.valid) {
+      console.log("This form is valid");
       if (this.registerForm.get('pass')?.value !== this.registerForm.get('confirmPassword')?.value) {
         this.snackBar.open('Passwords do not match!', 'Close', { duration: 3000 });
         return;
@@ -142,7 +147,7 @@ export class RegisterComponent implements OnInit {
       this.authService.register(registrationData).subscribe({
         next: (response) => {
           this.snackBar.open('Registration successful!', 'Close', { duration: 3000 });
-          this.activeForm = 'login';
+          // this.activeForm = 'login';
         },
         error: (error) => {
           console.error('Registration error:', error);
@@ -157,5 +162,8 @@ export class RegisterComponent implements OnInit {
   // Redirect to forget password page
   onforget() {
     this.router.navigate(['/forget-password']);
+  }
+  onlogin() {
+    this.router.navigate(['/professional-connect/login']);
   }
 }
