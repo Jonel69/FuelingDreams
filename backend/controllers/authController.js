@@ -37,7 +37,9 @@ const getCountries = async (req, res) => {
 };
 
 const register = async (req, res) => {
+    console.log("REquest recieved");
     const { f_name, l_name, email, phone_no, dob, gender, country, address, pass } = req.body;
+    console.log("Recieved registration request for:",req.body);
     try {
         const connection = await pool.getConnection();
         await connection.beginTransaction();
@@ -57,7 +59,9 @@ const register = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(pass, 10);
+        console.log(hashedPassword);
         const user = { f_name, l_name, email, phone_no, dob, gender, country, address, pass: hashedPassword };
+        console.log(user);
         await connection.query('INSERT INTO user_regis SET ?', user);
         await connection.commit();
 
@@ -70,6 +74,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
     const { email, pass } = req.body;
+    console.log("This is login request:",req.body);
     try {
         const [users] = await pool.query('SELECT * FROM user_login WHERE email = ?', [email]);
         if (users.length === 0) {
