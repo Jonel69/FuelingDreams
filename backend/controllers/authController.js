@@ -28,7 +28,7 @@ async function verifyRecaptcha(token) {
 const getCountries = async (req, res) => {
     try {
       const [results] = await pool.query('SELECT name FROM countries');
-      console.log('Fetched countries:', results); // Log results for debugging
+      //console.log('Fetched countries:', results); // Log results for debugging
       res.json(results);
     } catch (err) {
       console.error('Error fetching countries:', err);
@@ -84,7 +84,7 @@ const login = async (req, res) => {
         if (user.status === 1) {
             const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: '1h' });
             await pool.query('UPDATE user_login SET last_active = NOW() WHERE id = ?', [user.id]);
-            return res.json({ token, redirect: '/dashboard.html' });
+            return res.json({ token, redirect: './dashboard.component.html' });
         } else if (user.status === -1) {
             return res.status(403).json({ error: 'Account has been deleted' });
         } else if (user.status === 0) {
